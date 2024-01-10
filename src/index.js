@@ -1,3 +1,5 @@
+import './pages/index.css';
+import { initialCards } from './scripts/cards.js';
 // @todo: Темплейт карточки
 
 // @todo: DOM узлы
