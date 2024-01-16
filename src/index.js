@@ -7,6 +7,9 @@ const places = document.querySelector('.places__list');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupCloseButtons = document.querySelectorAll('.popup__close');
+const popupTypeEdit = document.querySelector('.popup_type_edit');
+const popupTypeNewCard = document.querySelector('.popup_type_new-card');
+const popups = document.querySelectorAll('.popup');
 
 function iterateCards() {
     initialCards.forEach(item => {
@@ -16,19 +19,25 @@ function iterateCards() {
 iterateCards();
 
 profileEditButton.addEventListener('click', function () {
-    const popup = document.querySelector('.popup_type_edit');
-    openPopup(popup);
+    openPopup(popupTypeEdit);
   });
 
 profileAddButton.addEventListener('click', function () {
-    const popup = document.querySelector('.popup_type_new-card');
-    openPopup(popup);
+    openPopup(popupTypeNewCard);
 });
 
 popupCloseButtons.forEach(item => {
     item.addEventListener('click', (event) => {
         const popup = item.closest('.popup');
         closePopup(popup);
+    });
+});
+
+popups.forEach(item => {
+    item.addEventListener('click', (evt) => {
+        if(evt.target === evt.currentTarget) {
+            closePopup(item);
+        }
     });
 });
 
@@ -40,12 +49,11 @@ function handleFormEditProfileSubmit(evt) {
     evt.preventDefault();
     const nameInput = formEditProfile.elements.name.value;
     const jobInput = formEditProfile.elements.description.value;
-    const popup = document.querySelector('.popup_type_edit');
 
     profileTitle .textContent = nameInput;
     profileDescription.textContent = jobInput;
 
-    closePopup(popup);
+    closePopup(popupTypeEdit);
 }
 
 formEditProfile.addEventListener('submit', handleFormEditProfileSubmit); 
@@ -56,7 +64,6 @@ function handleFormNewPlaceSubmit(evt) {
     evt.preventDefault();
     const nameInput = formNewPlace.elements['place-name'].value;
     const jobInput = formNewPlace.elements['link'].value;
-    const popup = document.querySelector('.popup_type_new-card');
     const newCard = {
         name: nameInput,
         link: jobInput
@@ -69,7 +76,7 @@ function handleFormNewPlaceSubmit(evt) {
 
     initialCards.unshift(newCard);
     iterateCards();
-    closePopup(popup);
+    closePopup(popupTypeNewCard);
 }
 
 formNewPlace.addEventListener('submit', handleFormNewPlaceSubmit);
