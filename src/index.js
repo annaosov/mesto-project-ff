@@ -6,10 +6,8 @@ import { openPopup, closePopup } from './scripts/modal.js';
 const places = document.querySelector('.places__list');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
-const popupCloseButtons = document.querySelectorAll('.popup__close');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
-const popups = document.querySelectorAll('.popup');
 
 function iterateCards() {
     initialCards.forEach(item => {
@@ -24,21 +22,6 @@ profileEditButton.addEventListener('click', function () {
 
 profileAddButton.addEventListener('click', function () {
     openPopup(popupTypeNewCard);
-});
-
-popupCloseButtons.forEach(item => {
-    item.addEventListener('click', (event) => {
-        const popup = item.closest('.popup');
-        closePopup(popup);
-    });
-});
-
-popups.forEach(item => {
-    item.addEventListener('click', (evt) => {
-        if(evt.target === evt.currentTarget) {
-            closePopup(item);
-        }
-    });
 });
 
 const formEditProfile = document.forms['edit-profile'];
