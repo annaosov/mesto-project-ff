@@ -8,6 +8,10 @@ const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
+const formEditProfile = document.forms['edit-profile'];
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
+const formNewPlace = document.forms['new-place'];
 
 function iterateCards() {
     initialCards.forEach(item => {
@@ -18,15 +22,13 @@ iterateCards();
 
 profileEditButton.addEventListener('click', function () {
     openPopup(popupTypeEdit);
+    formEditProfile.elements.name.value = document.querySelector('.profile__title').textContent;
+    formEditProfile.elements.description.value = document.querySelector('.profile__description').textContent;
   });
 
 profileAddButton.addEventListener('click', function () {
     openPopup(popupTypeNewCard);
 });
-
-const formEditProfile = document.forms['edit-profile'];
-const profileTitle = document.querySelector('.profile__title');
-const profileDescription = document.querySelector('.profile__description');
 
 function handleFormEditProfileSubmit(evt) {
     evt.preventDefault();
@@ -40,8 +42,6 @@ function handleFormEditProfileSubmit(evt) {
 }
 
 formEditProfile.addEventListener('submit', handleFormEditProfileSubmit); 
-
-const formNewPlace = document.forms['new-place'];
 
 function handleFormNewPlaceSubmit(evt) {
     evt.preventDefault();
@@ -60,6 +60,7 @@ function handleFormNewPlaceSubmit(evt) {
     initialCards.unshift(newCard);
     iterateCards();
     closePopup(popupTypeNewCard);
+    formNewPlace.reset();
 }
 
 formNewPlace.addEventListener('submit', handleFormNewPlaceSubmit);

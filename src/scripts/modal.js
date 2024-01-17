@@ -5,11 +5,6 @@ const popupTypeEdit = document.querySelector('.popup_type_edit');
 export function openPopup(popupElement) {
     popupElement.classList.add('popup_is-opened');
 
-    if (popupTypeEdit == popupElement) {
-        formEditProfile.elements.name.value = document.querySelector('.profile__title').textContent;
-        formEditProfile.elements.description.value = document.querySelector('.profile__description').textContent;
-    };
-
     popupCloseButtons.forEach(item => {
         item.addEventListener('click', (event) => {
             const popup = item.closest('.popup');
