@@ -1,6 +1,4 @@
-const formEditProfile = document.forms['edit-profile'];
 const popupCloseButtons = document.querySelectorAll('.popup__close');
-const popupTypeEdit = document.querySelector('.popup_type_edit');
 
 export function openPopup(popupElement) {
     popupElement.classList.add('popup_is-opened');
