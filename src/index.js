@@ -8,6 +8,7 @@ const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
+const popupTypeImage = document.querySelector('.popup_type_image');
 const formEditProfile = document.forms['edit-profile'];
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
@@ -28,6 +29,8 @@ popupCloseButtons.forEach(item => {
 popupTypeEdit.addEventListener('click', handleClosePopupByOverlay);
 
 popupTypeNewCard.addEventListener('click', handleClosePopupByOverlay);
+
+popupTypeImage.addEventListener('click', handleClosePopupByOverlay);
 
 profileEditButton.addEventListener('click', function () {
     openPopup(popupTypeEdit);
@@ -61,7 +64,7 @@ function handleFormNewPlaceSubmit(evt) {
         link: jobInput
     }
 
-    cardsContainer.prepend(createCard(newCard, deleteCard))
+    cardsContainer.prepend(createCard(newCard, deleteCard, handleLikeClick, openPopup))
     closePopup(popupTypeNewCard);
     formNewPlace.reset();
 }
