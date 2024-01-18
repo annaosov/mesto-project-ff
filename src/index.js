@@ -1,9 +1,9 @@
 import './pages/index.css';
 import { initialCards } from './scripts/cards.js';
-import { createCard, deleteCard } from './scripts/card.js';
-import { openPopup, closePopup } from './scripts/modal.js';
+import { createCard, deleteCard, handleLikeClick } from './scripts/card.js';
+import { openPopup, closePopup, handleClosePopupByButton, handleClosePopupByOverlay } from './scripts/modal.js';
 
-const places = document.querySelector('.places__list');
+const cardsContainer = document.querySelector('.places__list');
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupTypeEdit = document.querySelector('.popup_type_edit');
@@ -12,18 +12,27 @@ const formEditProfile = document.forms['edit-profile'];
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const formNewPlace = document.forms['new-place'];
+const popupCloseButtons = document.querySelectorAll('.popup__close');
 
 function iterateCards() {
     initialCards.forEach(item => {
-        places.append(createCard(item, deleteCard))
+        cardsContainer.append(createCard(item, deleteCard, handleLikeClick, openPopup))
     });
 };
 iterateCards();
 
+popupCloseButtons.forEach(item => {
+    item.addEventListener('click', handleClosePopupByButton);
+});
+
+popupTypeEdit.addEventListener('click', handleClosePopupByOverlay);
+
+popupTypeNewCard.addEventListener('click', handleClosePopupByOverlay);
+
 profileEditButton.addEventListener('click', function () {
     openPopup(popupTypeEdit);
-    formEditProfile.elements.name.value = document.querySelector('.profile__title').textContent;
-    formEditProfile.elements.description.value = document.querySelector('.profile__description').textContent;
+    formEditProfile.elements.name.value = profileTitle.textContent;
+    formEditProfile.elements.description.value = profileDescription.textContent;
   });
 
 profileAddButton.addEventListener('click', function () {
@@ -52,13 +61,7 @@ function handleFormNewPlaceSubmit(evt) {
         link: jobInput
     }
 
-    const allCards = document.querySelectorAll('.card');
-    allCards.forEach((item) => {
-        deleteCard(item);
-    });
-
-    initialCards.unshift(newCard);
-    iterateCards();
+    cardsContainer.prepend(createCard(newCard, deleteCard))
     closePopup(popupTypeNewCard);
     formNewPlace.reset();
 }
