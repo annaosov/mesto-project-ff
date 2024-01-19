@@ -21,7 +21,9 @@ export function handleClosePopupByOverlay (evt) {
 
 function handleClosePopupByEsc(evt) {
     if (evt.key === "Escape") {
-        const popup = document.querySelector('.popup_is-opened');
-        closePopup(popup);
+        if (document.querySelector('.popup_is-opened')) {
+            const popup = document.querySelector('.popup_is-opened');
+            closePopup(popup);
+        }
     }
 };
