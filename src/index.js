@@ -14,10 +14,12 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const formNewPlace = document.forms['new-place'];
 const popupCloseButtons = document.querySelectorAll('.popup__close');
+const popupImage = popupTypeImage.querySelector('.popup__image');
+const popupCaption = popupTypeImage.querySelector('.popup__caption');
 
 function iterateCards() {
     initialCards.forEach(item => {
-        cardsContainer.append(createCard(item, deleteCard, handleLikeClick, openPopup))
+        cardsContainer.append(createCard(item, deleteCard, handleLikeClick, onImageClick))
     });
 };
 iterateCards();
@@ -42,6 +44,13 @@ profileAddButton.addEventListener('click', function () {
     openPopup(popupTypeNewCard);
 });
 
+function onImageClick(card) {
+    popupImage.src = card.link;
+    popupImage.alt = card.name;
+    popupCaption.textContent = card.name;
+    openPopup(popupTypeImage);
+};
+
 function handleFormEditProfileSubmit(evt) {
     evt.preventDefault();
     const nameInput = formEditProfile.elements.name.value;
@@ -64,7 +73,7 @@ function handleFormNewPlaceSubmit(evt) {
         link: jobInput
     }
 
-    cardsContainer.prepend(createCard(newCard, deleteCard, handleLikeClick, openPopup))
+    cardsContainer.prepend(createCard(newCard, deleteCard, handleLikeClick, onImageClick))
     closePopup(popupTypeNewCard);
     formNewPlace.reset();
 }

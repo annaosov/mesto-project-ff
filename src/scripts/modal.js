@@ -20,10 +20,8 @@ export function handleClosePopupByOverlay (evt) {
 }
 
 function handleClosePopupByEsc(evt) {
-    if (evt.key == "Escape") {
-        const popups = document.querySelectorAll('.popup');
-        popups.forEach(item => {
-            closePopup(item);
-        });
+    if (evt.key === "Escape") {
+        const popup = document.querySelector('.popup_is-opened');
+        closePopup(popup);
     }
 };
