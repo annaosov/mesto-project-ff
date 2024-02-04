@@ -13,6 +13,7 @@ const popupTypeImage = document.querySelector('.popup_type_image');
 const formEditProfile = document.forms['edit-profile'];
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+const profileImage = document.querySelector('.profile__image');
 const formNewPlace = document.forms['new-place'];
 const popupCloseButtons = document.querySelectorAll('.popup__close');
 const popupImage = popupTypeImage.querySelector('.popup__image');
@@ -68,7 +69,7 @@ function handleFormEditProfileSubmit(evt) {
     const nameInput = formEditProfile.elements.name.value;
     const jobInput = formEditProfile.elements.description.value;
 
-    profileTitle .textContent = nameInput;
+    profileTitle.textContent = nameInput;
     profileDescription.textContent = jobInput;
 
     closePopup(popupTypeEdit);
@@ -92,3 +93,16 @@ function handleFormNewPlaceSubmit(evt) {
 }
 
 formNewPlace.addEventListener('submit', handleFormNewPlaceSubmit);
+
+fetch('https://nomoreparties.co/v1/wff-cohort-6/users/me', {
+  headers: {
+    authorization: 'c6e4de5c-a1eb-44c4-87e5-597d09502f16'
+  }
+})
+  .then(res => res.json())
+  .then((result) => {
+    profileTitle.textContent = result.name;
+    profileDescription.textContent = result.about;
+    profileImage.style.backgroundImage = `url(${result.avatar})`;
+    console.log(result);
+  });
