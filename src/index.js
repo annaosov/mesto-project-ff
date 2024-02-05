@@ -28,9 +28,20 @@ const validationConfig = {
 }
 
 function iterateCards() {
-    initialCards.forEach(item => {
-        cardsContainer.append(createCard(item, deleteCard, handleLikeClick, onImageClick))
+    fetch('https://nomoreparties.co/v1/wff-cohort-6/cards', {
+        headers: {
+            authorization: 'c6e4de5c-a1eb-44c4-87e5-597d09502f16'
+        }
+    })
+    .then(res => res.json())
+    .then((result) => {
+        result.forEach(item => {
+            cardsContainer.append(createCard(item, deleteCard, handleLikeClick, onImageClick))
+        });
     });
+    //initialCards.forEach(item => {
+        //cardsContainer.append(createCard(item, deleteCard, handleLikeClick, onImageClick))
+    //});
 };
 iterateCards();
 
