@@ -107,13 +107,24 @@ formEditProfile.addEventListener('submit', handleFormEditProfileSubmit);
 function handleFormNewPlaceSubmit(evt) {
     evt.preventDefault();
     const nameInput = formNewPlace.elements['place-name'].value;
-    const jobInput = formNewPlace.elements['link'].value;
-    const newCard = {
-        name: nameInput,
-        link: jobInput
-    }
+    const linkInput = formNewPlace.elements['link'].value;
 
-    cardsContainer.prepend(createCard(newCard, deleteCard, handleLikeClick, onImageClick))
+    fetch('https://nomoreparties.co/v1/wff-cohort-6/cards', {
+        method: 'POST',
+        headers: {
+            authorization: 'c6e4de5c-a1eb-44c4-87e5-597d09502f16',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: nameInput,
+            link: linkInput
+        })
+    })
+    .then(res => res.json())
+    .then((result) => {
+        cardsContainer.prepend(createCard(result, deleteCard, handleLikeClick, onImageClick));
+    });
+
     closePopup(popupTypeNewCard);
     formNewPlace.reset();
     clearValidation(formNewPlace, validationConfig);
