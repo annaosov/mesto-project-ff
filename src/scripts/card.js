@@ -9,6 +9,7 @@ export function createCard(card, onDelete, onLike, onImageClick) {
     cardElement.querySelector('.card__image').src = card.link;
     cardElement.querySelector('.card__image').alt = card.name;
     cardElement.querySelector('.card__title').textContent = card.name;
+    cardElement.querySelector('.card__like-count').textContent = card.likes.length;
     
     cardDeleteButton.addEventListener('click', function () {
         onDelete(cardElement);

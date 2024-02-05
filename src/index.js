@@ -35,13 +35,11 @@ function iterateCards() {
     })
     .then(res => res.json())
     .then((result) => {
+        console.log(result);
         result.forEach(item => {
             cardsContainer.append(createCard(item, deleteCard, handleLikeClick, onImageClick))
         });
     });
-    //initialCards.forEach(item => {
-        //cardsContainer.append(createCard(item, deleteCard, handleLikeClick, onImageClick))
-    //});
 };
 iterateCards();
 
