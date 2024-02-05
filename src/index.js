@@ -72,6 +72,22 @@ function handleFormEditProfileSubmit(evt) {
     profileTitle.textContent = nameInput;
     profileDescription.textContent = jobInput;
 
+    fetch('https://nomoreparties.co/v1/wff-cohort-6/users/me', {
+        method: 'PATCH',
+        headers: {
+            authorization: 'c6e4de5c-a1eb-44c4-87e5-597d09502f16',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: nameInput,
+            about: jobInput
+        })
+    })
+    .then(res => res.json())
+    .then((result) => {
+        console.log(result);
+    });
+
     closePopup(popupTypeEdit);
 }
 
@@ -99,10 +115,10 @@ fetch('https://nomoreparties.co/v1/wff-cohort-6/users/me', {
     authorization: 'c6e4de5c-a1eb-44c4-87e5-597d09502f16'
   }
 })
-  .then(res => res.json())
-  .then((result) => {
+.then(res => res.json())
+.then((result) => {
     profileTitle.textContent = result.name;
     profileDescription.textContent = result.about;
     profileImage.style.backgroundImage = `url(${result.avatar})`;
-    console.log(result);
-  });
+});
+
