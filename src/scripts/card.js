@@ -18,19 +18,33 @@ export function createCard(card, onDelete, onLike, onImageClick) {
     cardImage.addEventListener('click', () => onImageClick(card)); 
   
     cardLikeButton.addEventListener('click', function () {
-        fetch(`https://nomoreparties.co/v1/wff-cohort-6/cards/likes/${card._id}`, {
-            method: 'PUT',
-            headers: {
-                authorization: 'c6e4de5c-a1eb-44c4-87e5-597d09502f16',
-                'Content-Type': 'application/json'
-            },
-        })
-        .then(res => res.json())
-        .then((result) => {
-            console.log(result);
-            cardElement.querySelector('.card__like-count').textContent = result.likes.length;
-            onLike(cardLikeButton);
-        });
+        if (cardLikeButton.classList.contains('card__like-button_is-active')) {
+            fetch(`https://nomoreparties.co/v1/wff-cohort-6/cards/likes/${card._id}`, {
+                method: 'DELETE',
+                headers: {
+                    authorization: 'c6e4de5c-a1eb-44c4-87e5-597d09502f16',
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(res => res.json())
+            .then((result) => {
+                cardElement.querySelector('.card__like-count').textContent = result.likes.length;
+                onLike(cardLikeButton);
+            });
+        } else {
+            fetch(`https://nomoreparties.co/v1/wff-cohort-6/cards/likes/${card._id}`, {
+                method: 'PUT',
+                headers: {
+                    authorization: 'c6e4de5c-a1eb-44c4-87e5-597d09502f16',
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(res => res.json())
+            .then((result) => {
+                cardElement.querySelector('.card__like-count').textContent = result.likes.length;
+                onLike(cardLikeButton);
+            });
+        }
     });
   
     return cardElement;
