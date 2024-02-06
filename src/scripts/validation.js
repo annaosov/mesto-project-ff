@@ -53,7 +53,7 @@ const setEventListeners = (formElement, validationConfig) => {
     const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
     const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
 
-    if (formElement.name === 'new-place') {
+    if (formElement.name === 'new-place' || formElement.name === 'avatar') {
         toggleButtonState(inputList, buttonElement, validationConfig);
     };
 
