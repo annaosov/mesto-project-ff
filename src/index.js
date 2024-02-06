@@ -24,6 +24,7 @@ const formAvatar = document.forms['avatar'];
 const popupCloseButtons = document.querySelectorAll('.popup__close');
 const popupImage = popupTypeImage.querySelector('.popup__image');
 const popupCaption = popupTypeImage.querySelector('.popup__caption');
+const popupSubmitButton = document.querySelector('.popup__button');
 const validationConfig = {
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
@@ -61,7 +62,7 @@ profileEditButton.addEventListener('click', function () {
     formEditProfile.elements.name.value = profileTitle.textContent;
     formEditProfile.elements.description.value = profileDescription.textContent;
     clearValidation(formEditProfile, validationConfig);
-  });
+});
 
 profileAddButton.addEventListener('click', function () {
     openPopup(popupTypeNewCard);
@@ -80,8 +81,17 @@ function onImageClick(card) {
     openPopup(popupTypeImage);
 };
 
+function renderLoading(isLoading) {
+    if (isLoading) {
+        popupSubmitButton.textContent = 'Сохранение...';
+    } else {
+        popupSubmitButton.textContent = 'Сохранить';
+    }
+}
+
 function handleFormEditProfileSubmit(evt) {
     evt.preventDefault();
+    renderLoading(true);
     const nameInput = formEditProfile.elements.name.value;
     const jobInput = formEditProfile.elements.description.value;
 
@@ -90,10 +100,13 @@ function handleFormEditProfileSubmit(evt) {
 
     updateProfile(nameInput, jobInput)
         .then((result) => {
-            //console.log(result);
+            console.log('Профиль успешно обновлен.');
         })
         .catch((err) => {
             console.log(err);
+        })
+        .finally(() => {
+            renderLoading(false);
         });
 
     closePopup(popupTypeEdit);
@@ -103,6 +116,7 @@ formEditProfile.addEventListener('submit', handleFormEditProfileSubmit);
 
 function handleFormNewPlaceSubmit(evt) {
     evt.preventDefault();
+    renderLoading(true);
     const nameInput = formNewPlace.elements['place-name'].value;
     const linkInput = formNewPlace.elements['link'].value;
 
@@ -112,6 +126,9 @@ function handleFormNewPlaceSubmit(evt) {
         })
         .catch((err) => {
             console.log(err);
+        })
+        .finally(() => {
+            renderLoading(false);
         });
 
     closePopup(popupTypeNewCard);
@@ -123,6 +140,7 @@ formNewPlace.addEventListener('submit', handleFormNewPlaceSubmit);
 
 function handleFormAvatarSubmit(evt) {
     evt.preventDefault();
+    renderLoading(true);
     const linkInput = formAvatar.elements['link'].value;
     updateAvatar(linkInput)
         .then((result) => {
@@ -130,6 +148,9 @@ function handleFormAvatarSubmit(evt) {
         })
         .catch((err) => {
             console.log(err);
+        })
+        .finally(() => {
+            renderLoading(false);
         });
 
     closePopup(popupTypeAvatar);
@@ -148,4 +169,3 @@ getUserProfile()
     .catch((err) => {
         console.log(err);
     });
-

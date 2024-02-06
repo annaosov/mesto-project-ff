@@ -35,7 +35,7 @@ export function createCard(card, onDelete, onLike, onImageClick) {
     cardDeleteButton.addEventListener('click', function () {
         deleteSelfCard(card._id)
             .then((result) => {
-                console.log(result);
+                console.log(result.message);
                 onDelete(cardElement);
             })
             .catch((err) => {
