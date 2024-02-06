@@ -96,6 +96,20 @@ export const removeLike = (cardId) => {
     });
 };
 
+export const deleteSelfCard = (cardId) => {
+    return fetch(`${config.baseUrl}/cards/${cardId}`, {
+        method: 'DELETE',
+        headers: config.headers,
+    })
+    .then(res => {
+        if (res.ok) {
+            return res.json();
+        }
+
+        return Promise.reject(`Ошибка: ${res.status}`);
+    });
+};
+
 export const updateAvatar = (avatar) => {
     return fetch(`${config.baseUrl}/users/me/avatar`, {
         method: 'PATCH',

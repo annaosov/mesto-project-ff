@@ -124,7 +124,6 @@ formNewPlace.addEventListener('submit', handleFormNewPlaceSubmit);
 function handleFormAvatarSubmit(evt) {
     evt.preventDefault();
     const linkInput = formAvatar.elements['link'].value;
-    
     updateAvatar(linkInput)
         .then((result) => {
             profileImage.style.backgroundImage = `url(${result.avatar})`;

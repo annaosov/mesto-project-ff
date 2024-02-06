@@ -1,4 +1,5 @@
-//import { getUserProfile } from './api.js';
+import { getUserProfile } from './api.js';
+import { deleteSelfCard } from './api.js';
 import { putLike } from './api.js';
 import { removeLike } from './api.js';
 
@@ -15,23 +16,31 @@ export function createCard(card, onDelete, onLike, onImageClick) {
     cardElement.querySelector('.card__title').textContent = card.name;
     cardElement.querySelector('.card__like-count').textContent = card.likes.length;
 
-    //getUserProfile()
-        //.then((result) => {
-            //const userId = result._id;
-        //})
-        //.catch((err) => {
-            //console.log(err);
-        //});
-
-    //console.log(userId);
-    //card.likes.forEach(item => {
-        //if (item._id == userId) {
-            //cardLikeButton.classList.add('card__like-button_is-active');
-        //}
-    //});
+    getUserProfile()
+        .then((result) => {
+            if (result._id !== card.owner._id) {
+                cardDeleteButton.setAttribute('style',
+                `display: none`);
+            };
+            card.likes.forEach(item => {
+                if (item._id === result._id ) {
+                    cardLikeButton.classList.add('card__like-button_is-active');
+                }
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     
     cardDeleteButton.addEventListener('click', function () {
-        onDelete(cardElement);
+        deleteSelfCard(card._id)
+            .then((result) => {
+                console.log(result);
+                onDelete(cardElement);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     });
   
     cardImage.addEventListener('click', () => onImageClick(card)); 
