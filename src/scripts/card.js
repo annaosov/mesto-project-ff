@@ -66,7 +66,7 @@ export function createCard(card, onDelete, onLike, onImageClick) {
                 });
         }
     });
-  
+
     return cardElement;
 }
   
