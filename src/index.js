@@ -1,9 +1,5 @@
 import './pages/index.css';
-import { getInitialCards } from './scripts/api.js'
-import { getUserProfile } from './scripts/api.js';
-import { updateProfile } from './scripts/api.js';
-import { updateAvatar} from './scripts/api.js';
-import { addNewCard } from './scripts/api.js';
+import { getInitialCards, getUserProfile, updateProfile, updateAvatar, addNewCard } from './scripts/api.js'
 import { createCard, deleteCard, handleLikeClick } from './scripts/card.js';
 import { openPopup, closePopup, handleClosePopupByButton, handleClosePopupByOverlay } from './scripts/modal.js';
 import { clearValidation, enableValidation } from './scripts/validation.js';
@@ -31,7 +27,24 @@ const validationConfig = {
     inactiveButtonClass: 'popup__button_disabled',
     inputErrorClass: 'popup__input_type_error',
     errorClass: 'popup__error_visible'
-}
+};
+
+let userId;
+
+Promise.all([getUserProfile(), getInitialCards()])
+    .then(([userProfile, cards]) => {
+        profileTitle.textContent = userProfile.name;
+        profileDescription.textContent = userProfile.about;
+        profileImage.style.backgroundImage = `url(${userProfile.avatar})`;
+        userId = userProfile._id;
+
+        cards.forEach(item => {
+            cardsContainer.append(createCard(item, deleteCard, handleLikeClick, onImageClick, userId))
+        });
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 
 popupCloseButtons.forEach(item => {
     item.addEventListener('click', handleClosePopupByButton);
@@ -45,7 +58,7 @@ popupTypeAvatar.addEventListener('click', handleClosePopupByOverlay);
 
 popupTypeImage.addEventListener('click', handleClosePopupByOverlay);
 
-profileEditButton.addEventListener('click', function () {
+function editProfile() {
     const popupSubmitButton = popupTypeEdit.querySelector('.popup__button');
 
     openPopup(popupTypeEdit);
@@ -55,7 +68,9 @@ profileEditButton.addEventListener('click', function () {
     formEditProfile.elements.description.value = profileDescription.textContent;
     popupSubmitButton.disabled = true;
     popupSubmitButton.classList.add(validationConfig.inactiveButtonClass);
-});
+};
+
+profileEditButton.addEventListener('click', editProfile);
 
 profileAddButton.addEventListener('click', function () {
     openPopup(popupTypeNewCard);
@@ -90,11 +105,11 @@ function handleFormEditProfileSubmit(evt) {
     const nameInput = formEditProfile.elements.name.value;
     const jobInput = formEditProfile.elements.description.value;
 
-    profileTitle.textContent = nameInput;
-    profileDescription.textContent = jobInput;
-
     updateProfile(nameInput, jobInput)
         .then((result) => {
+            profileTitle.textContent = nameInput;
+            profileDescription.textContent = jobInput;
+
             console.log('Профиль успешно обновлен.');
             closePopup(popupTypeEdit);
         })
@@ -117,7 +132,7 @@ function handleFormNewPlaceSubmit(evt) {
 
     addNewCard(nameInput, linkInput)
         .then((result) => {
-            cardsContainer.prepend(createCard(result, deleteCard, handleLikeClick, onImageClick));
+            cardsContainer.prepend(createCard(result, deleteCard, handleLikeClick, onImageClick, userId));
             formNewPlace.reset();
 
             closePopup(popupTypeNewCard);
@@ -158,17 +173,3 @@ function handleFormAvatarSubmit(evt) {
 formAvatar.addEventListener('submit', handleFormAvatarSubmit);
 
 enableValidation(validationConfig);
-
-Promise.all([getUserProfile(), getInitialCards()])
-    .then(([userProfile, cards]) => {
-        profileTitle.textContent = userProfile.name;
-        profileDescription.textContent = userProfile.about;
-        profileImage.style.backgroundImage = `url(${userProfile.avatar})`;
-
-        cards.forEach(item => {
-            cardsContainer.append(createCard(item, deleteCard, handleLikeClick, onImageClick))
-        });
-    })
-    .catch((err) => {
-        console.log(err);
-    });
